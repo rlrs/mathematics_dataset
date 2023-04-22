@@ -104,15 +104,15 @@ def _make_comparison_question(context, left, right):
             answer = left.handle if sympy.Gt(left.value, right.value) else right.handle
             template = random.choice(
                 [
-                    "Which is bigger: {left} or {right}?",
-                    "Which is greater: {left} or {right}?",
+                    "Hvilken er større: {left} eller {right}?",
+                    "Hvilken er højere: {left} eller {right}?",
                 ]
             )
         else:
             answer = left.handle if sympy.Lt(left.value, right.value) else right.handle
             template = random.choice(
                 [
-                    "Which is smaller: {left} or {right}?",
+                    "Hvilken er mindre: {left} or {right}?",
                 ]
             )
         return example.Problem(
@@ -131,40 +131,40 @@ def _make_comparison_question(context, left, right):
 
     templates = {
         "<": [
-            "Is {left} " + ops.LT_SYMBOL + " {right}?",
-            "Is {left} less than {right}?",
-            "Is {left} smaller than {right}?",
+            "Er {left} " + ops.LT_SYMBOL + " {right}?",
+            "Er {left} mindre end {right}?",
+            "Er {left} lavere end {right}?",
         ],
         "<=": [
-            "Is {left} " + ops.LE_SYMBOL + " {right}?",
-            "Is {left} less than or equal to {right}?",
-            "Is {left} at most {right}?",
-            "Is {left} at most as big as {right}?",
+            "Er {left} " + ops.LE_SYMBOL + " {right}?",
+            "Er {left} mindre end eller lig med {right}?",
+            "Er {left} højest {right}?",
+            "Er {left} højest lige så meget som {right}?",
         ],
         ">": [
-            "Is {left} " + ops.GT_SYMBOL + " {right}?",
-            "Is {left} greater than {right}?",
-            "Is {left} bigger than {right}?",
+            "Er {left} " + ops.GT_SYMBOL + " {right}?",
+            "Er {left} større end {right}?",
+            "Er {left} højere end {right}?",
         ],
         ">=": [
-            "Is {left} " + ops.GE_SYMBOL + " {right}?",
-            "Is {left} greater than or equal to {right}?",
-            "Is {left} at least {right}?",
-            "Is {left} at least as big as {right}?",
+            "Er {left} " + ops.GE_SYMBOL + " {right}?",
+            "Er {left} større end eller lig med {right}?",
+            "Er {left} mindst {right}?",
+            "Er {left} mindst lige så stor som {right}?",
         ],
         "=": [
-            "Does {left} " + ops.EQ_SYMBOL + " {right}?",
-            "Are {left} and {right} equal?",
-            "Is {left} equal to {right}?",
-            "Do {left} and {right} have the same value?",
+            "Er {left} " + ops.EQ_SYMBOL + " {right}?",
+            "Er {left} og {right} ens?",
+            "Er {left} lig med {right}?",
+            "Har {left} og {right} samme værdi?",
         ],
         "!=": [
-            "Is {left} " + ops.NE_SYMBOL + " {right}?",
-            "Is {left} not equal to {right}?",
-            "Are {left} and {right} unequal?",
-            "Are {left} and {right} nonequal?",
-            "Are {left} and {right} non-equal?",
-            "Do {left} and {right} have different values?",
+            "Er {left} " + ops.NE_SYMBOL + " {right}?",
+            "Er {left} ikke lig med {right}?",
+            "Er {left} og {right} uens?",
+            "Er {left} og {right} ikke lig hinanden?",
+            "Er {left} og {right} ikke ens?",
+            "Har {left} og {right} forskellige værdier?",
         ],
     }
 
@@ -268,7 +268,7 @@ def _kth_biggest_list_question(context, entities, adjective, answer):
 
     question = example.question(
         context,
-        "What is the {adjective} value in " + values_template + "?",
+        "Hvad er den {adjective} værdi i " + values_template + "?",
         adjective=adjective,
         **entity_dict
     )
@@ -282,7 +282,7 @@ def _kth_biggest_multichoice_question(context, entities, adjective, answer):
     )
     question = example.question(
         context,
-        "Which is the {adjective} value?" + choices_template,
+        "Hvad er den {adjective} værdi?" + choices_template,
         adjective=adjective,
         **entity_dict
     )
@@ -339,11 +339,11 @@ def kth_biggest(sample_args, count=None):
     if random.choice([False, True]):
         # Do from biggest.
         answer = sorted_entities[-ordinal]
-        adjective = "biggest"
+        adjective = "største"
     else:
         # Do from smallest.
         answer = sorted_entities[ordinal - 1]
-        adjective = "smallest"
+        adjective = "mindste"
 
     if ordinal > 1:
         adjective = str(display.StringOrdinal(ordinal)) + " " + adjective
@@ -364,7 +364,7 @@ def _closest_in_list_question(context, entities, target, adjective, answer):
 
     question = example.question(
         context,
-        "What is the {adjective} to {target} in " + values_template + "?",
+        "Hvad er den {adjective} til {target} i " + values_template + "?",
         adjective=adjective,
         target=target,
         **entity_dict
@@ -380,7 +380,7 @@ def _closest_multichoice_question(context, entities, target, adjective, answer):
 
     question = example.question(
         context,
-        "Which is the {adjective} to {target}?" + choices_template,
+        "Hvad er den {adjective} til {target}?" + choices_template,
         adjective=adjective,
         target=target,
         **entity_dict
@@ -424,7 +424,7 @@ def closest(sample_args, count=None):
     min_difference = min(differences)
     answer_index = differences.index(min_difference)
     answer = entities[answer_index]
-    adjective = random.choice(["closest", "nearest"])
+    adjective = random.choice(["nærmeste", "tætteste"])
 
     if display_multichoice:
         return _closest_multichoice_question(
@@ -461,14 +461,14 @@ def sort(sample_args, count=None):
 
     ascending = random.choice([False, True])
     templates = [
-        "Sort " + unsorted_template + " in {direction} order.",
-        "Put " + unsorted_template + " in {direction} order.",
+        "Sorter " + unsorted_template + " i {direction} rækkefølge.",
+        "Sæt " + unsorted_template + " i {direction} rækkefølge.",
     ]
     if ascending:
-        templates.append("Sort " + unsorted_template + ".")
-        direction = random.choice(["ascending", "increasing"])
+        templates.append("Sorter " + unsorted_template + ".")
+        direction = random.choice(["stigende", "voksende"])
     else:
-        direction = random.choice(["descending", "decreasing"])
+        direction = random.choice(["faldende", "aftagende"])
     template = random.choice(templates)
 
     sorted_entities = sorted(entities, key=_entity_sort_key, reverse=(not ascending))
