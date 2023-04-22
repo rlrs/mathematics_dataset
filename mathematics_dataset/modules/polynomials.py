@@ -188,7 +188,7 @@ def evaluate(value, sample_args, context=None):
             context=context,
             value=value,
             expression=composed,
-            description="Let {self} be {composed}.",
+            description="Lad {self} være {composed}.",
             composed=composed,
         )
 
