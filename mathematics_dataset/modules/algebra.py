@@ -287,7 +287,7 @@ def _solve_linear_system(degree, value, sample_args, context=None):
         return composition.Entity(
             context=context,
             value=answer,
-            description="Suppose {equations}.",
+            description="Antag {equations}.",
             handle=variable,
             equations=equations,
         )
