@@ -142,15 +142,13 @@ def _add_question_or_entity(context, p, q, is_question):
             [
                 "{p} + {q}",
                 "{p}+{q}",
-                "Work out {p} + {q}.",
-                "Add {p} and {q}.",
-                "Put together {p} and {q}.",
-                "Sum {p} and {q}.",
-                "Total of {p} and {q}.",
-                "Add together {p} and {q}.",
-                "What is {p} plus {q}?",
-                "Calculate {p} + {q}.",
-                "What is {p} + {q}?",
+                "Udregn {p} + {q}.",
+                "Beregn {p} + {q}.",
+                "Læg {p} og {q} sammen.",
+                "Udregn summen af {p} og {q}.",
+                "Hvad er {p} plus {q}?",
+                "Hvad giver {p} + {q}?",
+                "Hvad giver {p} plus {q}?",
             ]
         )
         return example.Problem(
@@ -173,20 +171,20 @@ def _sub_question_or_entity(context, p, q, is_question):
     if is_question:
         templates = [
             "{p} - {q}",
-            "Work out {p} - {q}.",
-            "What is {p} minus {q}?",
-            "What is {p} take away {q}?",
-            "What is {q} less than {p}?",
-            "Subtract {q} from {p}.",
-            "Calculate {p} - {q}.",
-            "What is {p} - {q}?",
+            "Udregn {p} - {q}.",
+            "Hvad er {p} minus {q}?",
+            "Hvad er {p} fratrukket {q}?",
+            "Hvad er {q} mindre end {p}?",
+            "Træk {q} fra {p}.",
+            "Beregn {p} - {q}.",
+            "Hvad er {p} - {q}?",
         ]
         if sympy.Ge(p.value, q.value):
             # We calculate p - q, so the difference (|p - q|) is the correct answer.
-            for adjective in ["distance", "difference"]:
-                for pair in ["{p} and {q}", "{q} and {p}"]:
+            for adjective in ["afstanden", "forskellen"]:
+                for pair in ["{p} og {q}", "{q} og {p}"]:
                     templates.append(
-                        "What is the {} between {}?".format(adjective, pair)
+                        "Hvad er {} mellem {}?".format(adjective, pair)
                     )
         template = random.choice(templates)
         return example.Problem(
@@ -196,7 +194,7 @@ def _sub_question_or_entity(context, p, q, is_question):
         return composition.Entity(
             context=context,
             value=value,
-            description="Let {self} = {p} - {q}.",
+            description="Lad {self} = {p} - {q}.",
             p=p,
             q=q,
         )
@@ -255,10 +253,10 @@ def add_or_sub_in_base(sample_args):
     base = random.randint(2, 16)
     if random.choice([False, True]):
         answer = p + q
-        template = "In base {base}, what is {p} + {q}?"
+        template = "I base {base}, hvad er {p} + {q}?"
     else:
         answer = p - q
-        template = "In base {base}, what is {p} - {q}?"
+        template = "I base {base}, hvad er {p} - {q}?"
     return example.Problem(
         question=example.question(
             context,
@@ -288,13 +286,13 @@ def mul(value, sample_args, context=None):
         templates = [
             "{p}" + ops.MUL_SYMBOL + "{q}",
             "{p} " + ops.MUL_SYMBOL + " {q}",
-            "Calculate {p}" + ops.MUL_SYMBOL + "{q}.",
-            "Work out {p} " + ops.MUL_SYMBOL + " {q}.",
-            "Multiply {p} and {q}.",
-            "Product of {p} and {q}.",
-            "What is the product of {p} and {q}?",
-            "{p} times {q}",
-            "What is {p} times {q}?",
+            "Udregn {p}" + ops.MUL_SYMBOL + "{q}.",
+            "Beregn {p} " + ops.MUL_SYMBOL + " {q}.",
+            "Gang {p} og {q}.",
+            "Produktet af {p} og {q}.",
+            "Hvad er produktet af {p} og {q}?",
+            "{p} gange {q}",
+            "Hvad er {p} gange {q}?",
         ]
         template = random.choice(templates)
         return example.Problem(
@@ -335,10 +333,10 @@ def div(value, sample_args, context=None):
     if is_question:
         template = random.choice(
             [
-                "Divide {p} by {q}.",
-                "{p} divided by {q}",
-                "What is {p} divided by {q}?",
-                "Calculate {p} divided by {q}.",
+                "Divider {p} med {q}.",
+                "{p} divideret med {q}",
+                "Hvad er {p} divideret med {q}?",
+                "Beregn {p} divideret med {q}.",
             ]
         )
         return example.Problem(
@@ -348,7 +346,7 @@ def div(value, sample_args, context=None):
         return composition.Entity(
             context=context,
             value=answer,
-            description="Let {self} be {p} divided by {q}.",
+            description="Lad {self} være {p} divideret med {q}.",
             p=p,
             q=q,
         )
@@ -370,23 +368,22 @@ def nearest_integer_root(sample_args):
     answer = int(round(value ** (1 / one_over_exponent)))
 
     templates = [
-        "What is {value} to the power of 1/{one_over_exponent}, to the nearest"
-        " integer?",
+        "Hvad er {value} opløftet til 1/{one_over_exponent} potens, til nærmeste heltal?"
     ]
 
     if one_over_exponent != 2:  # "What is the second root of 4?" never used.
         ordinal = str()
         templates += [
-            "What is the {ordinal} root of {value} to the nearest integer?",
+            "Hvad er den {ordinal} rod af {value} til nærmeste heltal?",
         ]
 
     if one_over_exponent == 2:
         templates += [
-            "What is the square root of {value} to the nearest integer?",
+            "Hvad af kvadratroden af {value} til nærmeste heltal?",
         ]
     elif one_over_exponent == 3:
         templates += [
-            "What is the cube root of {value} to the nearest integer?",
+            "Hvad er kubikroden af {value} til nærmeste heltal?",
         ]
 
     template = random.choice(templates)
@@ -427,10 +424,10 @@ def _calculate(value, sample_args, context, add_sub, mul_div, length=None):
         template = random.choice(
             [
                 "{op}",
-                "What is {op}?",
-                "Evaluate {op}.",
-                "Calculate {op}.",
-                "What is the value of {op}?",
+                "Hvad er {op}?",
+                "Evaluer {op}.",
+                "Beregn {op}.",
+                "Hvad er værdien af {op}?",
             ]
         )
         return example.Problem(
@@ -441,7 +438,7 @@ def _calculate(value, sample_args, context, add_sub, mul_div, length=None):
             context=context,
             value=value,
             expression=op,
-            description="Let {self} be {op}.",
+            description="Lad {self} være {op}.",
             op=op,
         )
 
@@ -617,7 +614,7 @@ def simplify_surd(value, sample_args, context=None):
 
     template = random.choice(
         [
-            "Simplify {exp}.",
+            "Simplificer {exp}.",
         ]
     )
     return example.Problem(
