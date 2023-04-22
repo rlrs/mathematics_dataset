@@ -107,10 +107,11 @@ def coefficient_named(value, sample_args, context=None):
 
     template = random.choice(
         [
-            "Express {expression} as {canonical} and give {target}.",
-            "Rearrange {expression} to {canonical} and give {target}.",
-            "Express {expression} in the form {canonical} and give {target}.",
-            "Rearrange {expression} to the form {canonical} and give {target}.",
+            "Udtryk {expression} som {canonical} og giv {target}.",
+            "Omskriv {expression} til {canonical} og giv {target}.",
+            "Udtryk {expression} i formen {canonical} og giv {target}.",
+            "Udtryk {expression} i form af {canonical} og giv {target}.",
+            "Omskriv {expression} til formen {canonical} og giv {target}.",
         ]
     )
     return example.Problem(
@@ -126,10 +127,10 @@ def coefficient_named(value, sample_args, context=None):
 
 
 _TEMPLATES = [
-    "What is {composed}?",
-    "Calculate {composed}.",
-    "Give {composed}.",
-    "Determine {composed}.",
+    "Hvad er {composed}?",
+    "Udregn {composed}.",
+    "Giv {composed}.",
+    "Bestem {composed}.",
 ]
 
 
@@ -242,7 +243,7 @@ def add(value, sample_args, context=None):
         return composition.Entity(
             context=context,
             value=value,
-            description="Let {intermediate} = {composed}.",
+            description="Lad {intermediate} = {composed}.",
             handle=composition.FunctionHandle(intermediate_symbol),
             intermediate=intermediate,
             composed=expression,
@@ -263,7 +264,7 @@ def expand(value, sample_args, context=None):
     entropy -= math.log10(max_order - min_order + 1)
     expression_ = polynomials.sample_with_brackets(variable, order, entropy)
     expanded = sympy.expand(expression_)
-    template = random.choice(["Expand {expression}."])
+    template = random.choice(["Ekspander {expression}."])
     return example.Problem(
         question=example.question(context, template, expression=expression_),
         answer=expanded,
@@ -313,7 +314,7 @@ def collect(value, sample_args, context=None):
     context.sample_by_replacing_constants(sample_args, unsimplified)
 
     if is_question:
-        template = "Collect the terms in {unsimplified}."
+        template = "Saml termerne i {unsimplified}."
         return example.Problem(
             question=example.question(context, template, unsimplified=unsimplified),
             answer=simplified,
@@ -327,7 +328,7 @@ def collect(value, sample_args, context=None):
             handle=composition.FunctionHandle(function_symbol),
             expression=unsimplified,
             polynomial_variables=variables,
-            description="Let {function} = {unsimplified}.",
+            description="Lad {function} = {unsimplified}.",
             function=function,
             unsimplified=unsimplified,
         )
@@ -380,7 +381,7 @@ def simplify_power(value, sample_args, context=None):
 
     template = random.choice(
         [
-            "Simplify {unsimplified} assuming {variable} is positive.",
+            "Simplificer {unsimplified} under antagelsen at {variable} er positiv.",
         ]
     )
     return example.Problem(
