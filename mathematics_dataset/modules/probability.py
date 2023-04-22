@@ -110,7 +110,7 @@ def _sequence_event(values, length, verb):
     return event, event_description
 
 
-def _word_series(words, conjunction="and"):
+def _word_series(words, conjunction="og"):
     """Combines the words using commas and the final conjunction."""
     len_words = len(words)
     if len_words == 0:
