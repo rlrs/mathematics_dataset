@@ -48,7 +48,7 @@ _SWR_SAMPLE_COUNT = [2, 4]
 _SWR_SAMPLE_COUNT_EXTRAPOLATE = [5, 5]
 
 _GERUNDS = {
-    "pick": "picking",
+    "pick": "at udtage",
 }
 
 
@@ -106,7 +106,7 @@ def _sequence_event(values, length, verb):
     events = [probability.DiscreteEvent([sample]) for sample in samples]
     event = probability.FiniteProductEvent(events)
     sequence = "".join(str(sample) for sample in samples)
-    event_description = "sequence {sequence}".format(sequence=sequence)
+    event_description = "sekvensen {sequence}".format(sequence=sequence)
     return event, event_description
 
 
@@ -213,7 +213,7 @@ def _swr_space(is_train, sample_range):
 
     random_variable.description = (
         str(display.StringNumber(num_sampled))
-        + " letters picked without replacement from "
+        + " bogstaver bliver udtaget tilfældigt uden tilbagelægning fra "
         + sample.bag_contents
     )
 
@@ -250,10 +250,10 @@ def _sample_without_replacement_probability_question(is_train, event_fn, sample_
 
     template = random.choice(
         [
-            "{random_variable_capitalize}. What is prob of {event}?",
-            "{random_variable_capitalize}. Give prob of {event}.",
-            "What is prob of {event} when {random_variable}?",
-            "Calculate prob of {event} when {random_variable}.",
+            "{random_variable_capitalize}. Hvad er sandsynligheden for {event}?",
+            "{random_variable_capitalize}. Giv sandsynligheden for {event}.",
+            "Hvad er sandsynligheden for {event} når {random_variable}?",
+            "Udregn sandsynligheden for {event} når {random_variable}.",
         ]
     )
     question = example.question(
