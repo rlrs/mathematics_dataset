@@ -262,7 +262,7 @@ def time(is_train):
         if train_test_split.is_train(duration_minutes) == is_train:
             break
     end_minutes = start_minutes + duration_minutes
-    
+
     def format_24hr(minutes):
         """Format minutes from midnight in 24 hr format."""
         hours = (minutes // 60) % 24

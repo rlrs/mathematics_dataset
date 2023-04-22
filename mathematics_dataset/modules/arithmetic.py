@@ -183,9 +183,7 @@ def _sub_question_or_entity(context, p, q, is_question):
             # We calculate p - q, so the difference (|p - q|) is the correct answer.
             for adjective in ["afstanden", "forskellen"]:
                 for pair in ["{p} og {q}", "{q} og {p}"]:
-                    templates.append(
-                        "Hvad er {} mellem {}?".format(adjective, pair)
-                    )
+                    templates.append("Hvad er {} mellem {}?".format(adjective, pair))
         template = random.choice(templates)
         return example.Problem(
             question=example.question(context, template, p=p, q=q), answer=value
