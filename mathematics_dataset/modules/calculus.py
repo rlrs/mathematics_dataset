@@ -90,7 +90,7 @@ def _template(module_count, derivative_order, num_variables):
     if derivative_order == 1:
         templates += [
             "Differentier {eq} med hensyn til {var}.",
-            "Differentier{eq} mht {var}.",
+            "Differentier {eq} mht {var}.",
             "Hvad er den afledte af {eq} mht {var}?",
         ]
 
