@@ -273,7 +273,7 @@ def is_prime(value, sample_args, context=None):
     return example.Problem(
         question=example.question(
             context,
-            "Is {integer} {attribute}?",
+            "Er {integer} {attribute}?",
             integer=integer_entity.expression_else_handle,
             attribute=attribute_name,
         ),
