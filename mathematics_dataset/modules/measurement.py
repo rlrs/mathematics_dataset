@@ -73,41 +73,41 @@ LENGTH = {
     Unit("kilometer", "km"): 1000,
     Unit("centimeter", "cm"): sympy.Rational(1, 100),
     Unit("millimeter", "mm"): sympy.Rational(1, 1000),
-    Unit("micrometer", "um"): sympy.Rational(1, 1e6),
+    Unit("mikrometer", "um"): sympy.Rational(1, 1e6),
     Unit("nanometer", "nm"): sympy.Rational(1, 1e9),
 }
 
 TIME = {
-    Unit("second", "s"): 1,
-    Unit("minute", None): 60,
-    Unit("hour", None): 60 * 60,
-    Unit("day", None): 24 * 60 * 60,
-    Unit("week", None): 7 * 24 * 60 * 60,
-    Unit("millisecond", "ms"): sympy.Rational(1, 1e3),
-    Unit("microsecond", MICRO_SYMBOL + "s"): sympy.Rational(1, 1e6),
-    Unit("nanosecond", "ns"): sympy.Rational(1, 1e9),
+    Unit("sekund", "s"): 1,
+    Unit("minut", None): 60,
+    Unit("time", None): 60 * 60,
+    Unit("dag", None): 24 * 60 * 60,
+    Unit("uge", None): 7 * 24 * 60 * 60,
+    Unit("millisekund", "ms"): sympy.Rational(1, 1e3),
+    Unit("mikrosekund", MICRO_SYMBOL + "s"): sympy.Rational(1, 1e6),
+    Unit("nanosekund", "ns"): sympy.Rational(1, 1e9),
 }
 
 TIME_YEARLY = {
-    Unit("year", None): 1,
-    Unit("decade", None): 10,
-    Unit("century", None): 100,
-    Unit("millennium", None): 1000,
-    Unit("month", None): sympy.Rational(1, 12),
+    Unit("år", None): 1,
+    Unit("årti", None): 10,
+    Unit("århundrede", None): 100,
+    Unit("årtusinde", None): 1000,
+    Unit("måned", None): sympy.Rational(1, 12),
 }
 
 MASS = {
     Unit("kilogram", "kg"): 1,  # Yes, the *kilo*gram is the SI base unit.
-    Unit("tonne", "t"): 1000,
+    Unit("ton", "t"): 1000,
     Unit("gram", "g"): sympy.Rational(1, 1e3),
     Unit("milligram", "mg"): sympy.Rational(1, 1e6),
-    Unit("microgram", MICRO_SYMBOL + "g"): sympy.Rational(1, 1e9),
+    Unit("mikrogram", MICRO_SYMBOL + "g"): sympy.Rational(1, 1e9),
     Unit("nanogram", "ng"): sympy.Rational(1, 1e12),
 }
 
 VOLUME = {
-    Unit("litre", "l"): 1,
-    Unit("millilitre", "ml"): sympy.Rational(1, 1000),
+    Unit("liter", "l"): 1,
+    Unit("milliliter", "ml"): sympy.Rational(1, 1000),
 }
 
 
@@ -115,11 +115,23 @@ DIMENSIONS = [LENGTH, TIME, TIME_YEARLY, MASS, VOLUME]
 
 
 def pluralize(name):
-    if name == "century":
-        return "centuries"
-    if name == "millennium":
-        return "millennia"
-    return name + "s"
+    if name == "århundrede":
+        return "århundreder"
+    if name == "årtusinde":
+        return "årtusinder"
+    if name == "år":
+        return "år"
+    if name == "uge":
+        return "uger"
+    if name == "minut":
+        return "minutter"
+    if name == "dag":
+        return "dage"
+    if name == "time":
+        return "timer"
+    if "gram" in name or "meter" in name or "liter" in name or "ton" in name:
+        return name
+    return name + "er"
 
 
 def _factor_non_decimal(value):
@@ -155,15 +167,15 @@ def _conversion_decimal(context, is_train, is_extrapolation):
             break
 
     templates = [
-        "How many {target_name} are there in {base_value} {base_name}?",
-        "What is {base_value} {base_name} in {target_name}?",
-        "Convert {base_value} {base_name} to {target_name}.",
+        "Hvor mange {target_name} er der i {base_value} {base_name}?",
+        "Hvad er {base_value} {base_name} i {target_name}?",
+        "Konverter {base_value} {base_name} til {target_name}.",
     ]
     if base_unit.symbol is not None:
         templates += [
-            "How many {target_name} are there in {base_value}{base_symbol}?",
-            "What is {base_value}{base_symbol} in {target_name}?",
-            "Convert {base_value}{base_symbol} to {target_name}.",
+            "Hvor mange {target_name} er der i {base_value}{base_symbol}?",
+            "Hvad er {base_value}{base_symbol} i {target_name}?",
+            "Konverter {base_value}{base_symbol} til {target_name}.",
         ]
     template = random.choice(templates)
 
@@ -209,8 +221,8 @@ def _conversion_fraction(context, is_train):
 
     template = random.choice(
         [
-            "How many {target_name} are there in {base_value} of a {base_name}?",
-            "What is {base_value} of a {base_name} in {target_name}?",
+            "Hvor mange {target_name} er der i {base_value} af en {base_name}?",
+            "Hvad er {base_value} af en {base_name} i {target_name}?",
         ]
     )
 
@@ -250,24 +262,22 @@ def time(is_train):
         if train_test_split.is_train(duration_minutes) == is_train:
             break
     end_minutes = start_minutes + duration_minutes
-
-    def format_12hr(minutes):
-        """Format minutes from midnight in 12 hr format."""
+    
+    def format_24hr(minutes):
+        """Format minutes from midnight in 24 hr format."""
         hours = (minutes // 60) % 24
         minutes %= 60
-        am_pm = "AM" if hours < 12 else "PM"
-        hours = (hours - 1) % 12 + 1
-        return "{}:{:02} {}".format(hours, minutes, am_pm)
+        return "{:02}:{:02}".format(hours, minutes)
 
-    start = format_12hr(start_minutes)
-    end = format_12hr(end_minutes)
+    start = format_24hr(start_minutes)
+    end = format_24hr(end_minutes)
 
     which_question = random.randint(0, 3)
     if which_question == 0:
         # Question: What is start = end - duration?
         template = random.choice(
             [
-                "What is {duration} minutes before {end}?",
+                "Hvad er {duration} minutter før {end}?",
             ]
         )
         return example.Problem(
@@ -280,7 +290,7 @@ def time(is_train):
         # Question: What is end = start + duration?
         template = random.choice(
             [
-                "What is {duration} minutes after {start}?",
+                "Hvad er {duration} minutter efter {start}?",
             ]
         )
         return example.Problem(
@@ -293,7 +303,7 @@ def time(is_train):
         # Question: What is duration = end - start?
         template = random.choice(
             [
-                "How many minutes are there between {start} and {end}?",
+                "Hvor mange minutter er der mellem {start} og {end}?",
             ]
         )
         return example.Problem(
