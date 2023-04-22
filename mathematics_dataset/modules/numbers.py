@@ -110,21 +110,21 @@ def place_value(value, sample_args, context=None):
     integer_as_string = str(integer)
     num_digits = len(integer_as_string)
 
-    firsts = ["", "ten ", "hundred "]
+    firsts = ["", "ti ", "hundrede "]
     seconds = [
-        "thousands",
-        "millions",
-        "billions",
-        "trillions",
-        "quadrillions",
-        "quintillions",
-        "sextillions",
-        "septillions",
-        "octillions",
-        "nonillions",
-        "decillions",
+        "tusinder",
+        "millioner",
+        "milliarder",
+        "billioner",
+        "billiarder",
+        "trillioner",
+        "trilliarder",
+        "kvadrillioner",
+        "kvadrilliarder",
+        "kvintillioner",
+        "kvintilliarder",
     ]
-    place_names = ["units", "tens", "hundreds"]
+    place_names = ["enere", "tiere", "hundreder"]
     for second in seconds:
         for first in firsts:
             place_names.append(first + second)
@@ -136,7 +136,7 @@ def place_value(value, sample_args, context=None):
     return example.Problem(
         question=example.question(
             context,
-            "What is the {place_name} digit of {integer}?",
+            "Hvor mange {place_name} er der i {integer}?",
             place_name=place_name,
             integer=entity.expression_else_handle,
         ),
@@ -191,16 +191,16 @@ def round_number(value, sample_args, context=None):
             round_to = display.StringNumber(
                 round_to, join_number_words_with_hyphens=False
             )
-        description = "the nearest {round_to}".format(round_to=round_to)
+        description = "det nærmeste {round_to}".format(round_to=round_to)
     elif power == 0 and random.choice([False, True]):
         # Round to nearest integer.
-        description = "the nearest integer"
+        description = "det nærmeste heltal"
     else:
         # Round to decimal places.
-        description = random.choice(["{dps} decimal place", "{dps} dp"])
+        description = random.choice(["{dps} decimal", "{dps} dp"])
         if power != -1:
             # Plural
-            description += "s"
+            description += "er"
         dps = -power
         if random.choice([False, True]):
             dps = display.StringNumber(dps)
@@ -208,8 +208,8 @@ def round_number(value, sample_args, context=None):
 
     template = random.choice(
         [
-            "Round {input} to {description}.",
-            "What is {input} rounded to {description}?",
+            "Afrund {input} til {description}.",
+            "Hvad er {input} afrundet til {description}?",
         ]
     )
 
@@ -265,10 +265,10 @@ def is_prime(value, sample_args, context=None):
 
     if random.choice([False, True]) and integer != 1:
         answer = not is_prime_
-        attribute_name = random.choice(["composite", "a composite number"])
+        attribute_name = random.choice(["sammensat", "et sammensat tal"])
     else:
         answer = is_prime_
-        attribute_name = random.choice(["prime", "a prime number"])
+        attribute_name = random.choice(["primtal", "et primtal"])
 
     return example.Problem(
         question=example.question(
@@ -302,13 +302,13 @@ def is_factor(value, sample_args, context=None):
     (entity,) = context.sample(sample_args, [integer])
 
     templates = [
-        "Is {maybe_factor} a factor of {value}?",
-        "Is {value} a multiple of {maybe_factor}?",
-        "Does {maybe_factor} divide {value}?",
+        "Er {maybe_factor} en faktor af {value}?",
+        "Er {value} en multiplum af {maybe_factor}?",
+        "Kan {maybe_factor} dividere {value}?",
     ]
     if maybe_factor == 2:
         templates += [
-            "Is {value} even?",
+            "Er {value} lige?",
         ]
     template = random.choice(templates)
 
@@ -339,8 +339,8 @@ def list_prime_factors(value, sample_args, context=None):
     prime_factors = sorted(sympy.factorint(integer).keys())
     template = random.choice(
         [
-            "What are the prime factors of {integer}?",
-            "List the prime factors of {integer}.",
+            "Hvad er primfaktorerne af {integer}?",
+            "List primfaktorerne af {integer}.",
         ]
     )
     return example.Problem(
@@ -381,11 +381,11 @@ def lcm(value, sample_args, context=None):
     if random.choice([False, True]):
         p, q = context.sample(sample_args, [p, q])
         # Ask the question directly.
-        adjective = random.choice(["least", "lowest", "smallest"])
+        adjective = random.choice(["mindste", "laveste"])
         template = random.choice(
             [
-                "Calculate the {adjective} common multiple of {p} and {q}.",
-                "What is the {adjective} common multiple of {p} and {q}?",
+                "Udregn den {adjective} fællesnævner af {p} og {q}.",
+                "Hvad er den {adjective} fællesnævner af {p} og {q}?",
             ]
         )
         return example.Problem(
@@ -406,9 +406,9 @@ def lcm(value, sample_args, context=None):
 
         template = random.choice(
             [
-                "What is the common denominator of {p} and {q}?",
-                "Find the common denominator of {p} and {q}.",
-                "Calculate the common denominator of {p} and {q}.",
+                "Hvad er fællesnævneren af {p} og {q}?",
+                "Find fællesnævneren af {p} og {q}.",
+                "Udregn fællesnævneren af {p} og {q}.",
             ]
         )
         return example.Problem(
@@ -468,17 +468,13 @@ def gcd(value, sample_args, context=None):
 
     p, q = context.sample(sample_args, [p, q])
 
-    adjective = (
-        random.choice(["greatest", "highest"])
-        + " common "
-        + random.choice(["divisor", "factor"])
-    )
+    adjective = random.choice(["største", "højeste"])
 
     if is_question:
         template = random.choice(
             [
-                "Calculate the {adjective} of {p} and {q}.",
-                "What is the {adjective} of {p} and {q}?",
+                "Udregn den {adjective} fællesnævner af {p} og {q}.",
+                "Hvad er den {adjective} fællesnævner af {p} og {q}?",
             ]
         )
         return example.Problem(
@@ -489,7 +485,7 @@ def gcd(value, sample_args, context=None):
         return composition.Entity(
             context=context,
             value=value,
-            description="Let {self} be the {adjective} of {p} and {q}.",
+            description="Lad {self} være den {adjective} fællesnævner af {p} og {q}.",
             adjective=adjective,
             p=p,
             q=q,
@@ -521,8 +517,8 @@ def div_remainder(value, sample_args, context=None):
     if is_question:
         template = random.choice(
             [
-                "Calculate the remainder when {p} is divided by {q}.",
-                "What is the remainder when {p} is divided by {q}?",
+                "Udregn resten når {p} er divideret med {q}.",
+                "Hvad er resten når {p} er divideret med {q}?",
             ]
         )
         return example.Problem(
@@ -538,7 +534,7 @@ def div_remainder(value, sample_args, context=None):
         return composition.Entity(
             context=context,
             value=value,
-            description="Let {self} be the remainder when {p} is divided by {q}.",
+            description="Lad {self} være resten når {p} er divideret med {q}.",
             p=p,
             q=q,
         )
@@ -561,9 +557,9 @@ def base_conversion(min_entropy, max_entropy):
     value = number.integer(entropy, signed=True)
     template = random.choice(
         [
-            "{from_str} (base {from_base}) to base {to_base}",
-            "Convert {from_str} (base {from_base}) to base {to_base}.",
-            "What is {from_str} (base {from_base}) in base {to_base}?",
+            "{from_str} (base {from_base}) til base {to_base}",
+            "Konverter {from_str} (base {from_base}) til base {to_base}.",
+            "Hvad er {from_str} (base {from_base}) i base {to_base}?",
         ]
     )
     return example.Problem(
