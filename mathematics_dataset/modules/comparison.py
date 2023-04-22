@@ -112,7 +112,7 @@ def _make_comparison_question(context, left, right):
             answer = left.handle if sympy.Lt(left.value, right.value) else right.handle
             template = random.choice(
                 [
-                    "Hvilken er mindre: {left} or {right}?",
+                    "Hvilken er mindre: {left} eller {right}?",
                 ]
             )
         return example.Problem(
