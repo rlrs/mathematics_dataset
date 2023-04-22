@@ -186,17 +186,17 @@ def polynomial_roots(value, sample_args, context=None):
             equality = ops.Eq(polynomial_entity.handle.apply(variable), 0)
         template = random.choice(
             [
-                "Let {equality}. What is {variable}?",
-                "Let {equality}. Calculate {variable}.",
-                "Suppose {equality}. What is {variable}?",
-                "Suppose {equality}. Calculate {variable}.",
-                "What is {variable} in {equality}?",
-                "Solve {equality} for {variable}.",
-                "Find {variable} such that {equality}.",
-                "Find {variable}, given that {equality}.",
-                "Determine {variable} so that {equality}.",
-                "Determine {variable}, given that {equality}.",
-                "Solve {equality}.",
+                "Lad {equality}. Hvad er {variable}?",
+                "Lad {equality}. Udregn {variable}.",
+                "Antag {equality}. Hvad er {variable}?",
+                "Formod {equality}. Udregn {variable}.",
+                "Hvad er {variable} i {equality}?",
+                "Løs {equality} for {variable}.",
+                "Find {variable} sådan at {equality}.",
+                "Find {variable}, givet at {equality}.",
+                "Bestem {variable} sådan at {equality}.",
+                "Bestem {variable}, givet at {equality}.",
+                "Løs {equality}.",
             ]
         )
         return example.Problem(
@@ -217,7 +217,7 @@ def polynomial_roots(value, sample_args, context=None):
         )
         template = random.choice(
             [
-                "Factor {expression}.",
+                "Faktoriser {expression}.",
             ]
         )
         return example.Problem(
@@ -276,7 +276,7 @@ def _solve_linear_system(degree, value, sample_args, context=None):
     if is_question:
         template = random.choice(
             [
-                "Solve {equations} for {variable}.",
+                "Løs {equations} for {variable}.",
             ]
         )
         return example.Problem(
@@ -359,9 +359,9 @@ def sequence_next_term(min_entropy, max_entropy):
 
     template = random.choice(
         [
-            "What is next in {sequence}?",
-            "What comes next: {sequence}?",
-            "What is the next term in {sequence}?",
+            "Hvad er næste tal i {sequence}?",
+            "Hvad kommer næst: {sequence}?",
+            "Hvad er næste led i {sequence}?",
         ]
     )
     answer = sequence.term(num_terms + 1)
@@ -386,7 +386,7 @@ def sequence_nth_term(min_entropy, max_entropy):
 
     template = random.choice(
         [
-            "What is the {variable}'th term of {sequence}?",
+            "Hvad er det {variable}-te led af {sequence}?",  # "What is the g'th term of ...", this is weird to translate
         ]
     )
     answer = sequence.sympy
