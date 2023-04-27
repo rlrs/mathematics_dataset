@@ -341,7 +341,11 @@ def div(value, sample_args, context=None):
                 "Divider {p} med {q}.",
                 "{p} divideret med {q}",
                 "Hvad er {p} divideret med {q}?",
-                "Beregn {p} divideret med {q}.",
+                "Hvad er {p} delt med {q}?",
+                "Hvad er {p} / {q}?",
+                "Hvad er {p} over {q}?",
+                "Hvad er kvotienten af {p} delt med {q}?",
+                "Beregn {p} divideret med {q}",
             ]
         )
         return example.Problem(
