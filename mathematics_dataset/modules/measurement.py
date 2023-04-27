@@ -221,15 +221,16 @@ def _conversion_fraction(context, is_train):
 
     template = random.choice(
         [
-            "Hvor mange {target_name} er der i {base_value} af en {base_name}?",
+            "Hvor mange {target_name} er der i {base_value} af en {base_name}?", # TODO: en/et?
             "Hvad er {base_value} af en {base_name} i {target_name}?",
         ]
     )
 
-    if sympy.denom(base_value) > 20 or random.choice([False, True]):
-        base_value_string = base_value  # Will be represented as e.g., 2/3.
-    else:
-        base_value_string = display.StringNumber(base_value)  # e.g., two thirds
+    # TODO: fix this, the wording is really weird, so I disabled it
+    #if sympy.denom(base_value) > 20 or random.choice([False, True]):
+    base_value_string = base_value  # Will be represented as e.g., 2/3.
+    #else: 
+    #    base_value_string = display.StringNumber(base_value)  # e.g., two thirds
 
     question = example.question(
         context,
