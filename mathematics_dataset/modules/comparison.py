@@ -171,7 +171,7 @@ def _make_comparison_question(context, left, right):
     comparison = random.choice(list(comparisons.keys()))
     template = random.choice(templates[comparison])
     question = example.question(context, template, left=left, right=right)
-    answer = comparisons[comparison](left.value, right.value)
+    answer = "Ja" if comparisons[comparison](left.value, right.value) else "Nej"
 
     return example.Problem(question=question, answer=answer)
 
@@ -364,7 +364,7 @@ def _closest_in_list_question(context, entities, target, adjective, answer):
 
     question = example.question(
         context,
-        "Hvad er den {adjective} til {target} i " + values_template + "?",
+        "Hvilken af værdierne i {{" + values_template + "}} er den {adjective} til {target}?",
         adjective=adjective,
         target=target,
         **entity_dict
@@ -462,7 +462,8 @@ def sort(sample_args, count=None):
     ascending = random.choice([False, True])
     templates = [
         "Sorter " + unsorted_template + " i {direction} rækkefølge.",
-        "Sæt " + unsorted_template + " i {direction} rækkefølge.",
+        "Sorter listen " + unsorted_template + " i {direction} rækkefølge.",
+        "Sæt værdierne " + unsorted_template + " i {direction} rækkefølge.",
     ]
     if ascending:
         templates.append("Sorter " + unsorted_template + ".")
