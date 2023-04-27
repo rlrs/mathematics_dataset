@@ -106,7 +106,7 @@ def integers_with_sum(value, count, entropy):
         assert entropy == 0
         return []
     if count == 1:
-        assert entropy == 0
+        assert entropy < 1e-20
         return [value]
 
     if not number.is_integer(value):
