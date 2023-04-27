@@ -189,14 +189,15 @@ def polynomial_roots(value, sample_args, context=None):
                 "Lad {equality}. Hvad er {variable}?",
                 "Lad {equality}. Udregn {variable}.",
                 "Antag {equality}. Hvad er {variable}?",
-                "Formod {equality}. Udregn {variable}.",
+                # "Formod {equality}. Udregn {variable}.", # "formod" lyder underligt
                 "Hvad er {variable} i {equality}?",
                 "Løs {equality} for {variable}.",
+                "Løs ligningen {equality} for variablen {variable}.",
                 "Find {variable} sådan at {equality}.",
                 "Find {variable}, givet at {equality}.",
                 "Bestem {variable} sådan at {equality}.",
                 "Bestem {variable}, givet at {equality}.",
-                "Løs {equality}.",
+                # "Løs {equality}.", # bruger ikke {variable}
             ]
         )
         return example.Problem(
@@ -271,14 +272,29 @@ def _solve_linear_system(degree, value, sample_args, context=None):
     variable = variables[solution_index]
     answer = solutions[solution_index]
 
-    equations = ", ".join([str(equation) for equation in equations])
+    join_str = random.choice([" og ", ", ", "\n"])
+    equations = join_str.join([str(equation) for equation in equations])
 
     if is_question:
-        template = random.choice(
-            [
-                "Løs {equations} for {variable}.",
-            ]
-        )
+        if degree == 1:
+            template = random.choice(
+                [
+                    "Løs {equations} for {variable}.",
+                    "Løs {equations} for variablen {variable}.",
+                    "Løs ligningen {equations} for {variable}.",
+                    "Løs ligningen {equations} for variablen {variable}.",
+                ]
+            )
+        else:
+            template = random.choice(
+                [
+                    "Løs {equations} for {variable}.",
+                    "Løs ligningssystemet {equations} for {variable}.",
+                    "Løs ligningerne {equations} for {variable}.",
+                    "Løs ligningssystemet {equations} for variablen {variable}.",
+                    "Løs ligningerne {equations} for variablen {variable}.",
+                ]
+            )
         return example.Problem(
             example.question(context, template, equations=equations, variable=variable),
             answer,
@@ -359,8 +375,8 @@ def sequence_next_term(min_entropy, max_entropy):
 
     template = random.choice(
         [
-            "Hvad er næste tal i {sequence}?",
-            "Hvad kommer næst: {sequence}?",
+            "Hvad er næste tal i sekvensen {sequence}?",
+            "Hvad kommer næst i sekvensen {sequence}?",
             "Hvad er næste led i {sequence}?",
         ]
     )
@@ -386,7 +402,8 @@ def sequence_nth_term(min_entropy, max_entropy):
 
     template = random.choice(
         [
-            "Hvad er det {variable}-te led af {sequence}?",  # "What is the g'th term of ...", this is weird to translate
+            "Hvad er et generelt udtryk for det {variable}-te led af {sequence}?",  # "What is the g'th term of ...", this is weird to translate
+            "Find et udtryk for det {variable}-te led af {sequence}.",
         ]
     )
     answer = sequence.sympy

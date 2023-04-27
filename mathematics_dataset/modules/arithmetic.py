@@ -155,10 +155,17 @@ def _add_question_or_entity(context, p, q, is_question):
             question=example.question(context, template, p=p, q=q), answer=value
         )
     else:
+        let_templates = [
+            "Lad {self} være summen af {p} og {q}.",
+            "Lad {self} være {p} plus {q}.",
+            "Lad {self} være {p} + {q}.",
+            "Lad {self} = {p} + {q}.",
+        ]
+        
         return composition.Entity(
             context=context,
             value=value,
-            description="Lad {self} = {p} + {q}.",
+            description=random.choice(let_templates),
             p=p,
             q=q,
         )
