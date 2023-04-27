@@ -43,7 +43,7 @@ import sympy
 
 MUL_SYMBOL = "*"
 DIV_SYMBOL = "/"
-POW_SYMBOL = "**"
+POW_SYMBOL = "^"
 GT_SYMBOL = ">"
 LT_SYMBOL = "<"
 GE_SYMBOL = ">="
