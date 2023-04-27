@@ -173,7 +173,7 @@ def round_number(value, sample_args, context=None):
 
     remainder = random.randint(remainder_range_lower, remainder_range_upper)
     input_ = value_integer + sympy.Rational(remainder, remainder_divisor)
-    scale = 10**power if power >= 0 else sympy.Rational(1, 10 ** (-power))
+    scale = 10 ** power if power >= 0 else sympy.Rational(1, 10 ** (-power))
     input_ = input_ * scale
     value = value_integer * scale
     if not number.is_integer(input_):
@@ -185,7 +185,7 @@ def round_number(value, sample_args, context=None):
 
     if power > 0:
         # Rounding to a power of ten.
-        round_to = 10**power
+        round_to = 10 ** power
         if random.choice([False, True]):
             # Write the rounding value as a word instead.
             round_to = display.StringNumber(
@@ -431,7 +431,7 @@ def _random_coprime_pair(entropy):
         prime = random.choice(list(factors.keys()))
         power = factors[prime]
         del factors[prime]
-        return prime**power
+        return prime ** power
 
     if random.random() < 0.8 and len(factors) >= 2:
         # Disallow trivial factoring where possible.

@@ -150,7 +150,10 @@ def sample_from_module(module):
 
 def main(unused_argv):
     import locale
-    locale.setlocale(locale.LC_ALL, 'da_DK.UTF-8')  # Use '' for auto, or force e.g. to 'en_US.UTF-8'
+
+    locale.setlocale(
+        locale.LC_ALL, "da_DK.UTF-8"
+    )  # Use '' for auto, or force e.g. to 'en_US.UTF-8'
     """Prints Q&As from modules according to FLAGS.filter."""
     init_modules()
 

@@ -70,7 +70,7 @@ class FiniteProductSpaceTest(absltest.TestCase):
         heads = probability.DiscreteEvent({"h"})
         tails = probability.DiscreteEvent({"t"})
         event = probability.FiniteProductEvent([heads, heads, tails, tails, heads])
-        self.assertEqual(space.probability(event), sympy.Rational(4, 3**5))
+        self.assertEqual(space.probability(event), sympy.Rational(4, 3 ** 5))
 
     def testProbability_CountLevelSetEvent(self):
         base_space = probability.DiscreteProbabilitySpace({"a": 2, "b": 3, "c": 5})

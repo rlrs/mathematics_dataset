@@ -162,12 +162,12 @@ def evaluate(value, sample_args, context=None):
         power = degree - i
         coeff = number.integer(coeff_entropy, signed=True)
         if input_ != 0:
-            coeff += int(round(target / input_**power))
+            coeff += int(round(target / input_ ** power))
         if coeff == 0 and i == 0:
             # Don't allow zero in leading coefficient.
             coeff += random.choice([-1, 1])
         coeffs_reversed.append(coeff)
-        target -= coeff * (input_**power)
+        target -= coeff * (input_ ** power)
     coeffs_reversed.append(target)
 
     coefficients = list(reversed(coeffs_reversed))

@@ -109,7 +109,7 @@ def non_integer_decimal(entropy, signed):
     while True:
         base = integer(entropy, signed)
         shift = random.randint(1, int(math.ceil(entropy)))
-        divisor = 10**shift
+        divisor = 10 ** shift
         if base % divisor != 0:
             return display.Decimal(sympy.Rational(base, divisor))
 

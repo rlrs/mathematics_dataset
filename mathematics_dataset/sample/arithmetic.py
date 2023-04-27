@@ -118,8 +118,8 @@ def _split_factors(integer):
     for factor, mult in six.iteritems(factors):
         left_mult = random.randint(0, mult)
         right_mult = mult - left_mult
-        left *= factor**left_mult
-        right *= factor**right_mult
+        left *= factor ** left_mult
+        right *= factor ** right_mult
     return left, right
 
 

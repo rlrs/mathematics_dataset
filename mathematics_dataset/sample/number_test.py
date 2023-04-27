@@ -110,7 +110,7 @@ class NumberTest(parameterized.TestCase):
         seen = set()
         for _ in range(3000):
             seen.add(generator())
-        self.assertGreaterEqual(len(seen), 10**2)
+        self.assertGreaterEqual(len(seen), 10 ** 2)
 
     @parameterized.parameters(number.integer, number.non_integer_decimal)
     def testEntropyOfValue(self, generator):

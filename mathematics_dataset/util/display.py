@@ -234,7 +234,7 @@ class Decimal(object):
 
     def round(self, ndigits=0):
         """Returns a new `Decimal` rounded to this many decimal places."""
-        scale = sympy.Integer(10**ndigits)
+        scale = sympy.Integer(10 ** ndigits)
         numer = sympy.numer(self.value) * scale
         denom = sympy.denom(self.value)
         return Decimal(int(round(numer / denom)) / scale)

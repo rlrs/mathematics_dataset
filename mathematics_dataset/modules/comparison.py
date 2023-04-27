@@ -364,7 +364,9 @@ def _closest_in_list_question(context, entities, target, adjective, answer):
 
     question = example.question(
         context,
-        "Hvilken af værdierne i {{" + values_template + "}} er den {adjective} til {target}?",
+        "Hvilken af værdierne i {{"
+        + values_template
+        + "}} er den {adjective} til {target}?",
         adjective=adjective,
         target=target,
         **entity_dict

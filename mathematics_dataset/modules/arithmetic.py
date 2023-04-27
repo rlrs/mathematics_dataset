@@ -161,7 +161,7 @@ def _add_question_or_entity(context, p, q, is_question):
             "Lad {self} være {p} + {q}.",
             "Lad {self} = {p} + {q}.",
         ]
-        
+
         return composition.Entity(
             context=context,
             value=value,
