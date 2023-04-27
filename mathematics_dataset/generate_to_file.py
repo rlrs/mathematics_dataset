@@ -35,14 +35,16 @@ from __future__ import division
 from __future__ import print_function
 
 import os
+from multiprocessing import Pool, set_start_method
 
 # Dependency imports
+import jsonlines
 from absl import app
 from absl import flags
 from absl import logging
 from mathematics_dataset import generate
-import six
-from six.moves import range
+
+
 
 FLAGS = flags.FLAGS
 
@@ -53,7 +55,19 @@ flags.DEFINE_boolean(
 flags.mark_flag_as_required("output_dir")
 
 
+def generate_to_file(args):
+    module_name, module, regime_dir, per_module = args
+    logging.info(f"Generating {per_module} for {module_name}")
+    path = os.path.join(regime_dir, module_name + ".txt")
+    with jsonlines.open(path, "w") as text_file:
+        for _ in range(per_module):
+            problem, _ = generate.sample_from_module(module)
+            text_file.write({"source": "DM-Math-DA", "text": str(problem.question) + "\n" + str(problem.answer)})
+    logging.info("Written %s", path)
+
+
 def main(unused_argv):
+    set_start_method("fork") # absl doesn't like spawn
     generate.init_modules(FLAGS.train_split)
 
     output_dir = os.path.expanduser(FLAGS.output_dir)
@@ -62,18 +76,19 @@ def main(unused_argv):
     logging.info("Writing to %s", output_dir)
     os.makedirs(output_dir)
 
-    for regime, flat_modules in six.iteritems(generate.filtered_modules):
+    for regime, flat_modules in generate.filtered_modules.items():
+        print(f"Generating {regime}...")
         regime_dir = os.path.join(output_dir, regime)
         os.mkdir(regime_dir)
         per_module = generate.counts[regime]
-        for module_name, module in six.iteritems(flat_modules):
-            path = os.path.join(regime_dir, module_name + ".txt")
-            with open(path, "w", encoding="utf-8") as text_file:
-                for _ in range(per_module):
-                    problem, _ = generate.sample_from_module(module)
-                    text_file.write(str(problem.question) + "\n")
-                    text_file.write(str(problem.answer) + "\n")
-            logging.info("Written %s", path)
+        with Pool(processes=8) as pool:
+            pool.map(
+                generate_to_file,
+                [
+                    (module_name, module, regime_dir, per_module)
+                    for module_name, module in flat_modules.items()
+                ],
+            )
 
 
 if __name__ == "__main__":
