@@ -3,3 +3,4 @@ numpy>=1.10
 six
 sympy>=1.2
 jsonlines
+tqdm

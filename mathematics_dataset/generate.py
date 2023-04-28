@@ -105,8 +105,8 @@ def init_modules(train_split=False):
     else:
         all_modules["train"] = modules.train(_make_entropy_fn(0, 1))
 
-    all_modules["interpolate"] = modules.test()
-    all_modules["extrapolate"] = modules.test_extra()
+    #all_modules["interpolate"] = modules.test()
+    #all_modules["extrapolate"] = modules.test_extra()
 
     counts["train"] = FLAGS.per_train_module
     counts["train-easy"] = FLAGS.per_train_module // 3

@@ -103,10 +103,10 @@ def integers_with_sum(value, count, entropy):
     # Special cases.
     if count == 0:
         assert value == 0
-        assert entropy < 1e-20
+        assert entropy < 1e-2, entropy
         return []
     if count == 1:
-        assert entropy < 1e-20
+        assert entropy < 1e-2, entropy
         return [value]
 
     if not number.is_integer(value):

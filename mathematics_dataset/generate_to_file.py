@@ -43,7 +43,7 @@ from absl import app
 from absl import flags
 from absl import logging
 from mathematics_dataset import generate
-
+from tqdm import tqdm
 
 
 FLAGS = flags.FLAGS
@@ -62,33 +62,35 @@ def generate_to_file(args):
     with jsonlines.open(path, "w") as text_file:
         for _ in range(per_module):
             problem, _ = generate.sample_from_module(module)
-            text_file.write({"source": "DM-Math-DA", "text": str(problem.question) + "\n" + str(problem.answer)})
+            text_file.write(
+                {
+                    "source": "DM-Math-DA",
+                    "text": str(problem.question) + "\n" + str(problem.answer),
+                }
+            )
     logging.info("Written %s", path)
 
 
 def main(unused_argv):
-    set_start_method("fork") # absl doesn't like spawn
+    set_start_method("fork")  # absl doesn't like spawn
     generate.init_modules(FLAGS.train_split)
 
     output_dir = os.path.expanduser(FLAGS.output_dir)
-    if os.path.exists(output_dir):
-        logging.fatal("output dir %s already exists", output_dir)
+    #if os.path.exists(output_dir):
+    #    logging.fatal("output dir %s already exists", output_dir)
     logging.info("Writing to %s", output_dir)
-    os.makedirs(output_dir)
+    os.makedirs(output_dir, exist_ok=True)
 
+    all_regime_args = []
     for regime, flat_modules in generate.filtered_modules.items():
-        print(f"Generating {regime}...")
         regime_dir = os.path.join(output_dir, regime)
         os.mkdir(regime_dir)
         per_module = generate.counts[regime]
-        with Pool(processes=8) as pool:
-            pool.map(
-                generate_to_file,
-                [
-                    (module_name, module, regime_dir, per_module)
-                    for module_name, module in flat_modules.items()
-                ],
-            )
+        for module_name, module in flat_modules.items():
+            all_regime_args.append((module_name, module, regime_dir, per_module))
+    with Pool(processes=22) as pool:
+        for _ in tqdm(pool.imap_unordered(generate_to_file, all_regime_args), total=len(all_regime_args)):
+            pass
 
 
 if __name__ == "__main__":
